@@ -260,6 +260,27 @@
 		.foot-inner a { color: var(--fg-subtle); }
 		.foot-inner a:hover { color: var(--accent-strong); }
 
+		/* 备案栏 —— 工信部要求：主体信息可见，且链接至 beian.miit.gov.cn */
+		.foot-legal {
+			margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--border);
+			display: flex; flex-wrap: wrap; gap: 8px 20px;
+			align-items: center; justify-content: center;
+			color: var(--fg-subtle); font-size: .8rem; line-height: 1.7;
+		}
+		.foot-legal a {
+			display: inline-flex; align-items: center; gap: 6px;
+			color: var(--fg-subtle); min-height: 32px;
+			transition: color var(--dur) var(--ease);
+		}
+		.foot-legal a:hover { color: var(--accent-strong); }
+		.foot-legal svg { flex: none; opacity: .7; }
+		.foot-legal a:hover svg { opacity: 1; }
+		.foot-legal .sep { color: var(--border-strong); user-select: none; }
+		@media (max-width: 520px) {
+			.foot-legal { flex-direction: column; gap: 4px; text-align: center; }
+			.foot-legal .sep { display: none; }
+		}
+
 		/* ============ Entrance motion — enhances an already-visible default ============ */
 		@media (prefers-reduced-motion: no-preference) {
 			.reveal { opacity: 0; transform: translateY(18px); animation: rise .65s var(--ease) forwards; }
@@ -371,6 +392,16 @@
 			<div class="foot-inner">
 				<span>© <span id="year">2026</span> Qiaodan Ju · 鞠桥丹</span>
 				<span class="creed">We work in the darkness to serve the light.</span>
+			</div>
+
+			<div class="foot-legal">
+				<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener noreferrer"
+					title="在工业和信息化部政务服务平台查询本站备案信息">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+					苏ICP备2023001021号
+				</a>
+				<span class="sep" aria-hidden="true">|</span>
+				<span>本站内容仅代表个人观点</span>
 			</div>
 		</footer>
 	</div>
