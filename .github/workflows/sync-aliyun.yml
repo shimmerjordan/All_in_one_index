@@ -1,0 +1,25 @@
+name: Sync to Aliyun ECS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rsync to ECS
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: >-
+            -avzr --delete
+            --exclude=.git --exclude=.github
+            --exclude=README.txt --exclude=LICENSE.txt
+          path: ./
+          remote_path: /var/www/shimmerjordan/
+          remote_host: ${{ secrets.ALIYUN_HOST }}
+          remote_user: ${{ secrets.ALIYUN_USER }}
+          remote_key: ${{ secrets.ALIYUN_SSH_KEY }}
