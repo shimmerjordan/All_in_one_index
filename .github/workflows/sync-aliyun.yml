@@ -11,22 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          echo "${{ secrets.ALIYUN_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null && echo "✅ 私钥解析成功"
-          ssh-keyscan -H ${{ secrets.ALIYUN_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
-
       - name: Rsync to ECS
-        run: |
-          rsync -avz --delete \
-            --exclude='.git' --exclude='.github' \
-            --exclude='README.txt' --exclude='LICENSE.txt' \
-            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
-            ./ ${{ secrets.ALIYUN_USER }}@${{ secrets.ALIYUN_HOST }}:/var/www/shimmerjordan/
-
-      - name: Verify
-        run: |
-          curl -sS -o /dev/null -w "HTTP %{http_code}\n" https://shimmerjordan.site
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: >-
+            -avzr --delete
+            --exclude=.git --exclude=.github
+            --exclude=README.txt --exclude=LICENSE.txt
+          path: ./
+          remote_path: /var/www/shimmerjordan/
+          remote_host: ${{ secrets.ALIYUN_HOST }}
+          remote_user: ${{ secrets.ALIYUN_USER }}
+          remote_key: ${{ secrets.ALIYUN_SSH_KEY }}
